@@ -1,0 +1,6 @@
+author: neofu50 and AstosMan
+database: false
+main: me.AstosMan.plugins.CreativeMod.CreavtiveMod
+name: CreativeMod
+startup: postworld
+version: 0.0.1_beta_1.8
