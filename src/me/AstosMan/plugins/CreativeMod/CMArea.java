@@ -40,66 +40,66 @@ public class CMArea implements Serializable {
 	
 	public int getBottom() {
 		//Returns bottom int
-		if (l1.getY() <= l2.getY())
-			return (int) l1.getY();
-		else
-			return (int) l2.getY();
+		if (l1.getBlockY() <= l2.getBlockY())
+			return (int) l1.getBlockY();
+		return (int) l2.getBlockY();
 	}
 	
 	public int getTop() {
 		//Returns top int
-		if (l1.getY() >= l2.getY())
-			return (int) l1.getY();
-		else
-			return (int) l2.getY();
+		if (l1.getBlockY() >= l2.getBlockY())
+			return (int) l1.getBlockY();
+		return (int) l2.getBlockY();
 	}
 	
 	public int getNorth() {
 		//Returns North int
-		if (l1.getX() <= l2.getX())
-			return (int) l1.getX();
-		else
-			return (int) l2.getX();
+		if (l1.getBlockX() <= l2.getBlockX())
+			return (int) l1.getBlockX();
+		return (int) l2.getBlockX();
 	}
 	
 	public int getSouth() {
 		//Returns South int
-		if (l1.getX() >= l2.getX())
-			return (int) l1.getX();
-		else
-			return (int) l2.getX();
+		if (l1.getBlockX() >= l2.getBlockX())
+			return (int) l1.getBlockX();
+		return (int) l2.getBlockX();
 	}
 	
 	public int getEast() {
 		//Returns East int
-		if (l1.getZ() <= l2.getZ())
-			return (int) l1.getZ();
-		else
-			return (int) l2.getZ();
+		if (l1.getBlockZ() <= l2.getBlockZ())
+			return (int) l1.getBlockZ();
+		return (int) l2.getBlockZ();
 	}
 	
 	public int getWest() {
 		//Returns West int
-		if (l1.getZ() >= l2.getZ())
-			return (int) l1.getZ();
-		else
-			return (int) l2.getZ();
+		if (l1.getBlockZ() >= l2.getBlockZ())
+			return (int) l1.getBlockZ();
+		return (int) l2.getBlockZ();
 	}
 	
 	
 	public void setBottom(int y) {
 		//Sets bottom int
-		l1.setY(y);
+		if (l1.getBlockY() <= l2.getBlockY())
+			l1.setY(y);
+		else
+			l2.setY(y);
 	}
 	
 	public void setTop(int y) {
 		//Sets top int
-		l2.setY(y);
+		if (l1.getBlockY() >= l2.getBlockY())
+			l1.setY(y);
+		else
+			l2.setY(y);
 	}
 	
 	public void setNorth(int x) {
 		//Sets North int
-		if (l1.getX() <= l2.getX())
+		if (l1.getBlockX() <= l2.getBlockX())
 			 l1.setX(x);
 		else
 			l2.setX(x);
@@ -107,7 +107,7 @@ public class CMArea implements Serializable {
 	
 	public void setSouth(int x) {
 		//Sets South int
-		if (l1.getX() >= l2.getX())
+		if (l1.getBlockX() >= l2.getBlockX())
 			 l1.setX(x);
 		else
 			l2.setX(x);
@@ -115,7 +115,7 @@ public class CMArea implements Serializable {
 	
 	public void setEast(int z) {
 		//Sets East int
-		if (l1.getZ() <= l2.getZ())
+		if (l1.getBlockZ() <= l2.getBlockZ())
 			 l1.setZ(z);
 		else
 			l2.setZ(z);
@@ -123,10 +123,16 @@ public class CMArea implements Serializable {
 	
 	public void setWest(int z) {
 		//Sets West int
-		if (l1.getZ() >= l2.getZ())
+		if (l1.getBlockZ() >= l2.getBlockZ())
 			 l1.setZ(z);
 		else
 			l2.setZ(z);
+	}
+	
+	public boolean Contains(Location l) {
+		if (getNorth() <= l.getBlockX() && getSouth() >= l.getBlockX() && getBottom() <= l.getBlockY() && getTop() >= l.getBlockY() && getEast() <= l.getBlockZ() && getWest() >= l.getBlockZ())
+			return true;
+		return false;
 	}
 	
 }
