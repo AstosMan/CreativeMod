@@ -7,10 +7,12 @@ import java.io.Serializable;
 import org.bukkit.Location;
 import org.bukkit.World;
 
+@SuppressWarnings("serial")
 public class CMArea implements Serializable {
 	private Location l1, l2;
 
-	public CMArea(){}
+	@SuppressWarnings("unused")
+	private CMArea(){}
 	
 	public CMArea(World w,int x1, int z1,int x2,int z2) {
 		//Constructor defaults height to an extremely big area.
@@ -27,6 +29,8 @@ public class CMArea implements Serializable {
 	private void writeObject(ObjectOutputStream out) throws IOException {
 		//Object serializer
 		out.defaultWriteObject();
+		out.writeObject(l1);
+		out.writeObject(l2);
 	}
 
 	private void readObject(ObjectInputStream in) throws IOException, ClassNotFoundException {
