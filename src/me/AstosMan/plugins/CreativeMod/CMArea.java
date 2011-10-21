@@ -10,129 +10,139 @@ import org.bukkit.World;
 @SuppressWarnings("serial")
 public class CMArea implements Serializable {
 	private Location l1, l2;
+	private String name;
+	private int y1, y2;
 
 	@SuppressWarnings("unused")
-	private CMArea(){}
-	
-	public CMArea(World w,int x1, int z1,int x2,int z2) {
-		//Constructor defaults height to an extremely big area.
-		l1 = new Location(w, x1, 0,z1);
-		l2 = new Location(w, x2, 1000, z2);
+	private CMArea() {
+		//used for serialization only
 	}
 
-	public CMArea(World w, int x1,int y1, int z1, int x2, int y2, int z2) {
-		//Constructor requires a height variable.
-		l1 = new Location(w, x1, y1,z1);
+	public CMArea(final World w, String s, int x1, int z1, int x2, int z2) {
+		// Constructor defaults height to an extremely big area.
+		this(w, s, x1, 1000, z1, x2, 0, z2);
+	}
+
+	public CMArea(final World w, String s, int x1, int y1, int z1, int x2,
+			int y2, int z2) {
+		// Constructor requires a height variable.
+		if (x1 >= x2) {
+			if (y1 >= y2) {
+				if (z1 >= z2) {
+				} else {
+					int z = z2;
+					z2 = z1;
+					z1 = z;
+				}
+			} else {
+				int y = y2;
+				y2 = y1;
+				y1 = y;
+			}
+		} else {
+			int x = x2;
+			x2 = x1;
+			x1 = x;
+		}
+		l1 = new Location(w, x1, y1, z1);
 		l2 = new Location(w, x2, y2, z2);
+		name = s;
+		this.y1 = y1;
+		this.y2 = y2;
 	}
 
 	private void writeObject(ObjectOutputStream out) throws IOException {
-		//Object serializer
+		// Object serializer
 		out.defaultWriteObject();
 		out.writeObject(l1);
 		out.writeObject(l2);
 	}
 
-	private void readObject(ObjectInputStream in) throws IOException, ClassNotFoundException {
-		//Object deserializer
+	private void readObject(ObjectInputStream in) throws IOException,
+			ClassNotFoundException {
+		// Object deserializer
 		in.defaultReadObject();
 	}
-	
+
 	public int getBottom() {
-		//Returns bottom int
-		if (l1.getBlockY() <= l2.getBlockY())
-			return (int) l1.getBlockY();
-		return (int) l2.getBlockY();
+		// Returns bottom int
+		return y2;
 	}
-	
+
 	public int getTop() {
-		//Returns top int
-		if (l1.getBlockY() >= l2.getBlockY())
-			return (int) l1.getBlockY();
-		return (int) l2.getBlockY();
+		// Returns top int
+		return y1;
 	}
-	
-	public int getNorth() {
-		//Returns North int
-		if (l1.getBlockX() <= l2.getBlockX())
-			return (int) l1.getBlockX();
-		return (int) l2.getBlockX();
-	}
-	
-	public int getSouth() {
-		//Returns South int
-		if (l1.getBlockX() >= l2.getBlockX())
-			return (int) l1.getBlockX();
-		return (int) l2.getBlockX();
-	}
-	
-	public int getEast() {
-		//Returns East int
-		if (l1.getBlockZ() <= l2.getBlockZ())
-			return (int) l1.getBlockZ();
-		return (int) l2.getBlockZ();
-	}
-	
-	public int getWest() {
-		//Returns West int
-		if (l1.getBlockZ() >= l2.getBlockZ())
-			return (int) l1.getBlockZ();
-		return (int) l2.getBlockZ();
-	}
-	
-	
-	public void setBottom(int y) {
-		//Sets bottom int
-		if (l1.getBlockY() <= l2.getBlockY())
-			l1.setY(y);
-		else
+
+	public boolean setBottom(int y) {
+		// Sets bottom int returns true if possible
+		if (y <= y1) {
 			l2.setY(y);
+			y2 = y;
+			return true;
+		}
+		return false;
 	}
-	
-	public void setTop(int y) {
-		//Sets top int
-		if (l1.getBlockY() >= l2.getBlockY())
+
+	public boolean setTop(int y) {
+		// Sets top int returns true if possible
+		if (y >= y2) {
 			l1.setY(y);
-		else
-			l2.setY(y);
+			y1 = y;
+			return true;
+		}
+		return false;
 	}
-	
-	public void setNorth(int x) {
-		//Sets North int
-		if (l1.getBlockX() <= l2.getBlockX())
-			 l1.setX(x);
-		else
+
+	public boolean setNorth(int x) {
+		// Sets North int returns true if possible
+		if (x <= l1.getBlockX()) {
 			l2.setX(x);
+			return true;
+		}
+		return false;
 	}
-	
-	public void setSouth(int x) {
-		//Sets South int
-		if (l1.getBlockX() >= l2.getBlockX())
-			 l1.setX(x);
-		else
-			l2.setX(x);
+
+	public boolean setSouth(int x) {
+		// Sets South int returns true if possible
+		if (x >= l2.getBlockX()) {
+			l1.setX(x);
+			return true;
+		}
+		return false;
 	}
-	
-	public void setEast(int z) {
-		//Sets East int
-		if (l1.getBlockZ() <= l2.getBlockZ())
-			 l1.setZ(z);
-		else
+
+	public boolean setEast(int z) {
+		// Sets East int returns true if possible
+		if (z <= l1.getBlockZ()) {
 			l2.setZ(z);
+			return true;
+		}
+		return false;
 	}
-	
-	public void setWest(int z) {
-		//Sets West int
-		if (l1.getBlockZ() >= l2.getBlockZ())
-			 l1.setZ(z);
-		else
-			l2.setZ(z);
+
+	public boolean setWest(int z) {
+		// Sets West int returns true if possible
+		if (z >= l2.getBlockZ()) {
+			l1.setZ(z);
+			return true;
+		}
+		return false;
 	}
-	
-	public boolean Contains(Location l) {
-		if (getNorth() <= l.getBlockX() && getSouth() >= l.getBlockX() && getBottom() <= l.getBlockY() && getTop() >= l.getBlockY() && getEast() <= l.getBlockZ() && getWest() >= l.getBlockZ())
+
+	public boolean Contains(int x, int y, int z) {
+		// Returns true if coordinates are in this area
+		if (l2.getBlockX() <= x && l1.getBlockX() >= x && y2 <= y && y1 >= y
+				&& l2.getBlockZ() <= z && l1.getBlockZ() >= z)
 			return true;
 		return false;
 	}
 	
+	public String getName() {
+		return name;
+	}
+	
+	public void setName(String s) {
+		name = s;
+	}
 }
