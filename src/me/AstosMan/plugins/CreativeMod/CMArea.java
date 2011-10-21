@@ -5,32 +5,23 @@ import java.io.ObjectInputStream;
 import java.io.ObjectOutputStream;
 import java.io.Serializable;
 import org.bukkit.Location;
+import org.bukkit.World;
 
 public class CMArea implements Serializable {
-	//Intended instance variables not sure that if it needs plugin
-	//but better safe then sorry.
-	private static final long serialVersionUID = 1L;
 	private Location l1, l2;
-	private int h0, h1;
 
-	public CMArea() {
-		//Blank Constructor
-	}
-
-	public CMArea(Location l1, Location l2) {
+	public CMArea(){}
+	
+	public CMArea(World w,int x1, int z1,int x2,int z2) {
 		//Constructor defaults height to an extremely big area.
-		this.l1 = l1;
-		this.l2 = l2;
-		h0 = 0;
-		h1 = 1000;
+		l1 = new Location(w, x1, 0,z1);
+		l2 = new Location(w, x2, 1000, z2);
 	}
 
-	public CMArea(Location l1, Location l2, int h0, int h1) {
+	public CMArea(World w, int x1,int y1, int z1, int x2, int y2, int z2) {
 		//Constructor requires a height variable.
-		this.l1 = l1;
-		this.l2 = l2;
-		this.h0 = h0;
-		this.h1 = h1;
+		l1 = new Location(w, x1, y1,z1);
+		l2 = new Location(w, x2, y2, z2);
 	}
 
 	private void writeObject(ObjectOutputStream out) throws IOException {
@@ -42,44 +33,96 @@ public class CMArea implements Serializable {
 		//Object deserializer
 		in.defaultReadObject();
 	}
-
-	public Location GetLoc1() {
-		//Returns first corner
-		return l1;
-	}
-
-	public Location GetLoc2() {
-		//Returns second corner
-		return l2;
+	
+	public int getBottom() {
+		//Returns bottom int
+		if (l1.getY() <= l2.getY())
+			return (int) l1.getY();
+		else
+			return (int) l2.getY();
 	}
 	
-	public int bottom() {
-		//Returns bottom level
-		return h0;
+	public int getTop() {
+		//Returns top int
+		if (l1.getY() >= l2.getY())
+			return (int) l1.getY();
+		else
+			return (int) l2.getY();
 	}
 	
-	public int top() {
-		//Returns top level
-		return h1;
+	public int getNorth() {
+		//Returns North int
+		if (l1.getX() <= l2.getX())
+			return (int) l1.getX();
+		else
+			return (int) l2.getX();
 	}
 	
-	public void setBottom(int h0) {
-		//Sets Bottom level
-		this.h0=h0;
+	public int getSouth() {
+		//Returns South int
+		if (l1.getX() >= l2.getX())
+			return (int) l1.getX();
+		else
+			return (int) l2.getX();
 	}
 	
-	public void setTop(int h1) {
-		//Sets top level
-		this.h1=h1;
+	public int getEast() {
+		//Returns East int
+		if (l1.getZ() <= l2.getZ())
+			return (int) l1.getZ();
+		else
+			return (int) l2.getZ();
 	}
 	
-	public void setLoc1(Location l1) {
-		//Sets first corner
-		this.l1=l1;
+	public int getWest() {
+		//Returns West int
+		if (l1.getZ() >= l2.getZ())
+			return (int) l1.getZ();
+		else
+			return (int) l2.getZ();
 	}
 	
-	public void setLoc2(Location l2) {
-		//Sets second corner
-		this.l2=l2;
+	
+	public void setBottom(int y) {
+		//Sets bottom int
+		l1.setY(y);
 	}
+	
+	public void setTop(int y) {
+		//Sets top int
+		l2.setY(y);
+	}
+	
+	public void setNorth(int x) {
+		//Sets North int
+		if (l1.getX() <= l2.getX())
+			 l1.setX(x);
+		else
+			l2.setX(x);
+	}
+	
+	public void setSouth(int x) {
+		//Sets South int
+		if (l1.getX() >= l2.getX())
+			 l1.setX(x);
+		else
+			l2.setX(x);
+	}
+	
+	public void setEast(int z) {
+		//Sets East int
+		if (l1.getZ() <= l2.getZ())
+			 l1.setZ(z);
+		else
+			l2.setZ(z);
+	}
+	
+	public void setWest(int z) {
+		//Sets West int
+		if (l1.getZ() >= l2.getZ())
+			 l1.setZ(z);
+		else
+			l2.setZ(z);
+	}
+	
 }
