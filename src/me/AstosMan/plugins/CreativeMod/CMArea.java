@@ -1,5 +1,7 @@
 package me.AstosMan.plugins.CreativeMod;
 
+import java.io.FileInputStream;
+import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.ObjectInputStream;
 import java.io.ObjectOutputStream;
@@ -51,17 +53,23 @@ public class CMArea implements Serializable {
 		this.y2 = y2;
 	}
 
-	private void writeObject(ObjectOutputStream out) throws IOException {
+	public void writeObject() throws IOException {
 		// Object serializer
+		ObjectOutputStream out = new ObjectOutputStream(new FileOutputStream(name + ".dat"));
 		out.defaultWriteObject();
 		out.writeObject(l1);
 		out.writeObject(l2);
+		out.close();
 	}
 
-	private void readObject(ObjectInputStream in) throws IOException,
+	public void readObject(String name) throws IOException,
 			ClassNotFoundException {
 		// Object deserializer
+		ObjectInputStream in = new ObjectInputStream(new FileInputStream(name + ".dat"));
 		in.defaultReadObject();
+		l1 = (Location)in.readObject();
+		l2 = (Location)in.readObject();
+		in.close();
 	}
 
 	public int getBottom() {
@@ -130,19 +138,21 @@ public class CMArea implements Serializable {
 		return false;
 	}
 
-	public boolean Contains(int x, int y, int z) {
+	public boolean Contains(Location l) {
 		// Returns true if coordinates are in this area
-		if (l2.getBlockX() <= x && l1.getBlockX() >= x && y2 <= y && y1 >= y
-				&& l2.getBlockZ() <= z && l1.getBlockZ() >= z)
+		if (l2.getBlockX() <= l.getBlockX() && l1.getBlockX() >= l.getBlockX() && l2.getBlockY() <= l.getBlockY() && l1.getBlockY() >= l.getBlockY()
+				&& l2.getBlockZ() <= l.getBlockZ() && l1.getBlockZ() >= l.getBlockZ())
 			return true;
 		return false;
 	}
 	
 	public String getName() {
+		// Returns name
 		return name;
 	}
 	
 	public void setName(String s) {
+		// Sets name
 		name = s;
 	}
 }
