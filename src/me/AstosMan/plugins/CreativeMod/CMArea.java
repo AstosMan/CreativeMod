@@ -7,6 +7,7 @@ import java.io.ObjectInputStream;
 import java.io.ObjectOutputStream;
 import java.io.Serializable;
 import org.bukkit.Location;
+import org.bukkit.Material;
 import org.bukkit.World;
 
 @SuppressWarnings("serial")
@@ -154,5 +155,16 @@ public class CMArea implements Serializable {
 	public void setName(String s) {
 		// Sets name
 		name = s;
+	}
+	
+	public void clearArea() {
+		// Changes all blocks in the area to air
+		for (int i = l2.getBlockX(); i <= l1.getBlockX(); i++) {
+			for (int j = l2.getBlockY(); i <= l1.getBlockY();  i++) {
+				for (int k = l2.getBlockZ(); i <= l1.getBlockZ(); i++) {
+					l1.getWorld().getBlockAt(i, j, k).setType(Material.AIR);
+				}
+			}
+		}
 	}
 }
