@@ -205,4 +205,9 @@ public class CMArea implements Serializable {
 			}
 		}
 	}
+
+	public World getWorld() {
+		// TODO Auto-generated method stub
+		return l1.getWorld();
+	}
 }
