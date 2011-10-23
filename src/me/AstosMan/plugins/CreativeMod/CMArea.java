@@ -15,11 +15,7 @@ public class CMArea implements Serializable {
 	private Location l1, l2;
 	private String name;
 	private int y1, y2;
-
-	@SuppressWarnings("unused")
-	private CMArea() {
-		//used for serialization only
-	}
+	private boolean trinitrotolueneIsOff, MobEntranceIsOff;
 
 	public CMArea(final World w, String s, int x1, int z1, int x2, int z2) {
 		// Constructor defaults height to an extremely big area.
@@ -52,6 +48,8 @@ public class CMArea implements Serializable {
 		name = s;
 		this.y1 = y1;
 		this.y2 = y2;
+		trinitrotolueneIsOff = true;
+		MobEntranceIsOff = true;
 	}
 
 	public void writeObject() throws IOException {
@@ -155,6 +153,26 @@ public class CMArea implements Serializable {
 	public void setName(String s) {
 		// Sets name
 		name = s;
+	}
+	
+	public boolean getTrinitrotolueneState() {
+		// Returns the state of trinitrotolueneIsOff to input
+		return trinitrotolueneIsOff;
+	}
+	
+	public void setMobEntranceState(boolean isOff) {
+		// Sets the state of MobEntranceIsOff to input
+		MobEntranceIsOff = isOff;
+	}
+	
+	public boolean getMobEntranceState() {
+		// Returns the state of MobEntranceIsOff
+		return MobEntranceIsOff;
+	}
+	
+	public void setTrinitrotolueneAsOff(boolean isOff) {
+		// Sets the state of trinitrotolueneIsOff to input
+		trinitrotolueneIsOff = isOff;
 	}
 	
 	public void clearArea() {
