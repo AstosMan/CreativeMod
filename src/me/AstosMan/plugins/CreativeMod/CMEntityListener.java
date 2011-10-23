@@ -56,5 +56,4 @@ public class CMEntityListener extends EntityListener
 		}
 		super.onExplosionPrime(event);
 	}
-	
 }

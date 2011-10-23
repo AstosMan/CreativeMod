@@ -90,6 +90,26 @@ public class CMArea implements Serializable {
 		}
 		return false;
 	}
+	
+	public int getX2() {
+		// Gets Northern int
+		return l2.getBlockX();
+	}
+	
+	public int getX1() {
+		// Gets Southern int
+		return l1.getBlockX();
+	}
+	
+	public int getZ2() {
+		// Gets Western int
+		return l2.getBlockZ();
+	}
+	
+	public int getZ1() {
+		// Gets Eastern int
+		return l1.getBlockZ();
+	}
 
 	public boolean setTop(int y) {
 		// Sets top int returns true if possible
