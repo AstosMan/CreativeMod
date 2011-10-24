@@ -2,21 +2,35 @@ package me.AstosMan.plugins.CreativeMod;
 
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandSender;
+import org.bukkit.event.Event;
+import org.bukkit.plugin.PluginManager;
 import org.bukkit.plugin.java.JavaPlugin;
+
+import java.util.ArrayList;
 import java.util.logging.*;
 
 public class CreativeMod extends JavaPlugin
 {
 	protected Logger log = Logger.getLogger("Minecraft");
+	protected ArrayList<CMArea> areas;
 	
     public void onEnable()
     { 	    	
+    	PluginManager pm = this.getServer().getPluginManager();
+    	areas = new ArrayList<CMArea>();
+    	
+    	pm.registerEvent(Event.Type.PLAYER_MOVE, new CMPlayerListener(this), Event.Priority.Lowest, this);
         log.info(this + " is now enabled!");
     }
 
     public void onDisable()
     {
         log.info(this + " is now disabled!");
+    }
+    
+    public ArrayList<CMArea> getAreas()
+    {
+    	return areas;
     }
     
     public boolean onCommand(CommandSender sender, Command cmd, String label, String[] args)
