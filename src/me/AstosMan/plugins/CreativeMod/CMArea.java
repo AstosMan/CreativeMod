@@ -6,25 +6,36 @@ import java.io.IOException;
 import java.io.ObjectInputStream;
 import java.io.ObjectOutputStream;
 import java.io.Serializable;
+import java.util.ArrayList;
+import java.util.HashMap;
+
 import org.bukkit.Location;
 import org.bukkit.Material;
 import org.bukkit.World;
+import org.bukkit.entity.Player;
+import org.bukkit.inventory.ItemStack;
+import org.bukkit.inventory.PlayerInventory;
 
-@SuppressWarnings("serial")
+
 public class CMArea implements Serializable {
 	private Location l1, l2;
 	private String name;
 	private int y1, y2;
 	private boolean trinitrotolueneIsOff, MobEntranceIsOff;
+	private HashMap<String, ItemStack[]> inventories; 
+	private ArrayList<Player> players;
 
 	public CMArea(final World w, String s, int x1, int z1, int x2, int z2) {
 		// Constructor defaults height to an extremely big area.
 		this(w, s, x1, 1000, z1, x2, 0, z2);
+		inventories = new HashMap<String, ItemStack[]>();
+		players = new ArrayList<Player>();
 	}
 
 	public CMArea(final World w, String s, int x1, int y1, int z1, int x2,
 			int y2, int z2) {
 		// Constructor requires a height variable.
+		inventories = new HashMap<String, ItemStack[]>();
 		if (x1 >= x2) {
 			if (y1 >= y2) {
 				if (z1 >= z2) {
@@ -50,6 +61,7 @@ public class CMArea implements Serializable {
 		this.y2 = y2;
 		trinitrotolueneIsOff = true;
 		MobEntranceIsOff = true;
+		players = new ArrayList<Player>();
 	}
 
 	public void writeObject() throws IOException {
@@ -69,6 +81,26 @@ public class CMArea implements Serializable {
 		l1 = (Location)in.readObject();
 		l2 = (Location)in.readObject();
 		in.close();
+	}
+	
+	public boolean hasPlayer(Player p)
+	{
+		return players.contains(p) ? true : false;
+	}
+	
+	public void addPlayer(Player p)
+	{
+		this.players.add(p);
+	}
+	
+	public void addInventory(String pname, ItemStack[] pi)
+	{
+		this.inventories.put(pname, pi);
+	}
+	
+	public ItemStack[] getInventory(String pname)
+	{
+		return this.inventories.get(pname);
 	}
 
 	public int getBottom() {
@@ -157,7 +189,7 @@ public class CMArea implements Serializable {
 		return false;
 	}
 
-	public boolean Contains(Location l) {
+	public boolean contains(Location l) {
 		// Returns true if coordinates are in this area
 		if (l2.getBlockX() <= l.getBlockX() && l1.getBlockX() >= l.getBlockX() && l2.getBlockY() <= l.getBlockY() && l1.getBlockY() >= l.getBlockY()
 				&& l2.getBlockZ() <= l.getBlockZ() && l1.getBlockZ() >= l.getBlockZ())

@@ -19,6 +19,7 @@ public class CreativeMod extends JavaPlugin
     	PluginManager pm = this.getServer().getPluginManager();
     	areas = new ArrayList<CMArea>();
     	
+    	
     	pm.registerEvent(Event.Type.PLAYER_MOVE, new CMPlayerListener(this), Event.Priority.Lowest, this);
     	pm.registerEvent(Event.Type.EXPLOSION_PRIME, new CMEntityListener(this), Event.Priority.Highest, this);
     	pm.registerEvent(Event.Type.CREATURE_SPAWN, new CMEntityListener(this), Event.Priority.Normal, this);
