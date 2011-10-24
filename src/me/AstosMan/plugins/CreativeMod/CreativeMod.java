@@ -21,7 +21,7 @@ public class CreativeMod extends JavaPlugin
     	
     	pm.registerEvent(Event.Type.PLAYER_MOVE, new CMPlayerListener(this), Event.Priority.Lowest, this);
     	pm.registerEvent(Event.Type.EXPLOSION_PRIME, new CMEntityListener(this), Event.Priority.Highest, this);
-    	pm.registerEvent(Event.Type.CREATURE_SPAWN, new CMEntityListener(this), Event.Priority.Highest, this);
+    	pm.registerEvent(Event.Type.CREATURE_SPAWN, new CMEntityListener(this), Event.Priority.Normal, this);
     	pm.registerEvent(Event.Type.ENTITY_EXPLODE, new CMEntityListener(this), Event.Priority.Highest, this);
         log.info(this + " is now enabled!");
     }
