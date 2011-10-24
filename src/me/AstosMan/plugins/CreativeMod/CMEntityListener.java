@@ -3,6 +3,8 @@ package me.AstosMan.plugins.CreativeMod;
 import java.util.ArrayList;
 
 import org.bukkit.entity.CreatureType;
+import org.bukkit.entity.Creeper;
+import org.bukkit.entity.Monster;
 import org.bukkit.entity.TNTPrimed;
 import org.bukkit.event.entity.CreatureSpawnEvent;
 import org.bukkit.event.entity.EntityListener;
@@ -31,7 +33,7 @@ public class CMEntityListener extends EntityListener
 	
 	public void onCreatureSpawn(CreatureSpawnEvent event) {
 		// If Mob is spawned and within a creative area that has set Mobs to off this method will cancel the spawn.
-		if (event.getCreatureType().equals(CreatureType.MONSTER)) {
+		if (event.getEntity() instanceof Monster) {
 			for(CMArea area : CMAreas) {
 				if (area.Contains(event.getEntity().getLocation()) && area.getMobEntranceState()) {
 					event.setCancelled(true);
@@ -46,7 +48,7 @@ public class CMEntityListener extends EntityListener
 	
 	public void onExplosionPrimeEvent(ExplosionPrimeEvent event){
 		// If TNT is primed and within a creative area that has set TNT to off this method will cancel the explosion.
-		if (event.getEntity() instanceof TNTPrimed) {
+		if (event.getEntity() instanceof TNTPrimed || event.getEntity() instanceof Creeper) {
 			for (CMArea area : CMAreas) {
 				if (area.Contains(event.getEntity().getLocation()) && area.getTrinitrotolueneState()) {
 					event.setCancelled(true);
