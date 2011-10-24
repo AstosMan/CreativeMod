@@ -22,7 +22,7 @@ public class CMEntityListener extends EntityListener
 		// If Mob is spawned and within a creative area that has set Mobs to off this method will cancel the spawn.
 		if (event.getEntity() instanceof Monster) {
 			for(CMArea cma : ((CreativeMod)plugin).getAreas()) {
-				if (cma.Contains(event.getEntity().getLocation()) && cma.getMobEntranceState() && cma.getWorld() == event.getEntity().getWorld()) {
+				if (cma.Contains(event.getEntity().getLocation()) && cma.getMobEntranceState()) {
 					event.setCancelled(true);
 					return;
 				}
@@ -36,7 +36,7 @@ public class CMEntityListener extends EntityListener
 		// If Creeper explodes and within a creative area that has set TNT to off this method will cancel the explosion.
 		if (event.getEntity() instanceof Creeper) {
 			for (CMArea cma : ((CreativeMod)plugin).getAreas()) {
-				if (cma.Contains(event.getEntity().getLocation()) && cma.getTrinitrotolueneState() && cma.getWorld() == event.getEntity().getWorld()) {
+				if (cma.Contains(event.getEntity().getLocation()) && cma.getTrinitrotolueneState()) {
 					event.setCancelled(true);
 					return;
 				}
