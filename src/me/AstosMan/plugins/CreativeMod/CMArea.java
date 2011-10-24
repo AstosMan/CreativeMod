@@ -18,7 +18,7 @@ import org.bukkit.inventory.PlayerInventory;
 
 
 public class CMArea implements Serializable {
-	private Location l1, l2;
+	private Location l1, l2, l3, l4;
 	private String name;
 	private int y1, y2;
 	private boolean trinitrotolueneIsOff, MobEntranceIsOff;
@@ -56,6 +56,8 @@ public class CMArea implements Serializable {
 		}
 		l1 = new Location(w, x1, y1, z1);
 		l2 = new Location(w, x2, y2, z2);
+		l3 = new Location(w, x1 + 10, y1 + 10, z1 + 10);
+		l4 = new Location(w, x2 - 10, y2 - 10, z2 - 10);
 		name = s;
 		this.y1 = y1;
 		this.y2 = y2;
@@ -189,10 +191,19 @@ public class CMArea implements Serializable {
 		return false;
 	}
 
+
 	public boolean contains(Location l) {
 		// Returns true if coordinates are in this area
 		if (l2.getBlockX() <= l.getBlockX() && l1.getBlockX() >= l.getBlockX() && l2.getBlockY() <= l.getBlockY() && l1.getBlockY() >= l.getBlockY()
-				&& l2.getBlockZ() <= l.getBlockZ() && l1.getBlockZ() >= l.getBlockZ())
+				&& l2.getBlockZ() <= l.getBlockZ() && l1.getBlockZ() >= l.getBlockZ() && l.getWorld().equals(l1.getWorld()))
+			return true;
+		return false;
+	}
+	
+	public boolean isCloseTo(Location l) {
+		// Returns true if coordinates are within 10 blocks of the area and in the same world
+		if (l4.getBlockX() <= l.getBlockX() && l3.getBlockX() >= l.getBlockX() && l4.getBlockY() <= l.getBlockY() && l3.getBlockY() >= l.getBlockY()
+				&& l4.getBlockZ() <= l.getBlockZ() && l3.getBlockZ() >= l.getBlockZ() && l.getWorld().equals(l1.getWorld()))
 			return true;
 		return false;
 	}
