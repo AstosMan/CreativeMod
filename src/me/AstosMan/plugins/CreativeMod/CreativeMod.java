@@ -44,21 +44,83 @@ public class CreativeMod extends JavaPlugin
 			{
 				if(args.length > 2)
 				{
-					if(args[0].equals("make"))
+					if(args[0].equals("create"))
 					{
-						//TODO: construct a new volume
+						if (args.length == 6) {
+							for (CMArea a:areas) {
+								if (a.getName().equals(args[1])) {
+									sender.sendMessage(a.getName() + "is already an area.");
+									return false;
+								}
+							}
+							try {
+								areas.add(new CMArea(sender.getServer().getPlayer(sender.getName()).getWorld(), args[1], Integer.parseInt(args[2]), Integer.parseInt(args[3]), Integer.parseInt(args[4]), Integer.parseInt(args[5])));
+							}
+							catch (NumberFormatException exp){
+								sender.sendMessage("Error create command requires numbers.");
+								return false;
+							}
+							sender.sendMessage(args[1] + " has been created with the points (" + args[2] + ", 0, " + args[3] +"); (" + args[4] + ", 1000, " + args[5] +").");
+							return true;
+						}
+						if (args.length == 8) {
+							for (CMArea a:areas) {
+								if (a.getName().equals(args[1])) {
+									sender.sendMessage(a.getName() + "is already an area.");
+									return false;
+								}
+							}
+							try {
+								areas.add(new CMArea(sender.getServer().getPlayer(sender.getName()).getWorld(), args[1], Integer.parseInt(args[2]), Integer.parseInt(args[3]), Integer.parseInt(args[4]), Integer.parseInt(args[5]), Integer.parseInt(args[6]), Integer.parseInt(args[7])));
+							}	
+							catch (NumberFormatException exp){
+								sender.sendMessage("Error create command requires numbers.");
+								return false;
+							}
+							sender.sendMessage(args[1] + " has been created with the points (" + args[2] + ", " + args[3] + ", " + args[4] +"); (" + args[5] + ", " + args[6]+ ", " + args[7] +").");
+							return true;
+						}
+						sender.sendMessage("Oops that was not a name.");
+						return false;
 					}
+					
 					else if(args[0].equals("tnt"))
 					{
-						//TODO: toggle tnt on specified volume
+						if (args.length == 2) {
+							for (CMArea a:areas) {
+								if (a.getName().equals(args[1])) {
+									a.setTrinitrotolueneState(!a.getTrinitrotolueneState());
+									if (a.getTrinitrotolueneState() == false)
+										sender.sendMessage(a.getName() + "'s Tnt state has been succesfully turned off.");
+									else
+										sender.sendMessage(a.getName() + "'s Tnt state has been succesfully turned on.");
+									return true;
+								}
+							}
+							sender.sendMessage("Oops that name is not defined.");
+							return false;
+						}
+						sender.sendMessage("Oops that was not a name.");
+						return false;
 					}
 					else if(args[0].equals("mobs"))
 					{
-						//TODO:toggle mobs on specified volume
-					}
-					else if(args[0].equals("alert"))
-					{
-						//TODO: toggle whether user is alerted to volume before entering
+						if (args.length == 2) {
+							for (CMArea a:areas) {
+								if (a.getName().equals(args[1])) {
+									a.setMobEntranceState(!a.getMobEntranceState());
+									if (a.getMobEntranceState() == false)
+										sender.sendMessage(a.getName() + "'s Mob state has been succesfully turned off");
+									else
+										sender.sendMessage(a.getName() + "'s Mob state has been succesfully turned on");
+									return true;
+								}
+							}
+							sender.sendMessage("Oops that name is not defined.");
+							return false;
+						}
+						sender.sendMessage("Oops that was not a name.");
+						return false;
 					}
 					else if(args[0].equals("delete"))
 					{
@@ -66,19 +128,122 @@ public class CreativeMod extends JavaPlugin
 					}
 					else if(args[0].equals("clear"))
 					{
-						//TODO: Replaces specified volume with air
+						if (args.length == 2) {
+							for (CMArea a:areas) {
+								if (a.getName().equals(args[1])) {
+									a.clearArea();
+									sender.sendMessage(a.getName() + " has been cleared.");
+									return true;
+								}
+							}
+							sender.sendMessage("Oops that name is not defined");
+							return false;
+						}
+						sender.sendMessage("Oops that was not a name.");
+						return false;
 					}
 					else if(args[0].equals("resize"))
 					{
-						//TODO: Resizes specified volume to specifications
+						if (args.length == 4) {
+							for (CMArea a:areas) {
+								if (a.getName().equals(args[1])) {
+									if (args[2].equals("north") || args[2].equals("n")) {
+										try {
+											a.setNorth(Integer.parseInt(args[3]));
+										}	
+										catch (NumberFormatException exp){
+											sender.sendMessage("Error resize command requires numbers.");
+											return false;
+										}
+										sender.sendMessage(args[1] + "'s " + args[2] + " side has been changed to " + args[3] + ".");
+										return true;
+									}
+									else if (args[2].equals("south") || args[2].equals("s")) {
+										try {
+											a.setSouth(Integer.parseInt(args[3]));
+										}	
+										catch (NumberFormatException exp){
+											sender.sendMessage("Error resize command requires numbers.");
+											return false;
+										}
+										sender.sendMessage(args[1] + "'s " + args[2] + " side has been changed to " + args[3] + ".");
+										return true;
+									}
+									else if (args[2].equals("east") || args[2].equals("e")) {
+										try {
+											a.setEast(Integer.parseInt(args[3]));
+										}	
+										catch (NumberFormatException exp){
+											sender.sendMessage("Error resize command requires numbers.");
+											return false;
+										}
+										sender.sendMessage(args[1] + "'s " + args[2] + " side has been changed to " + args[3] + ".");
+										return true;
+									}
+									else if (args[2].equals("west") || args[2].equals("w")) {
+										try {
+											a.setWest(Integer.parseInt(args[3]));
+										}	
+										catch (NumberFormatException exp){
+											sender.sendMessage("Error resize command requires numbers.");
+											return false;
+										}
+										sender.sendMessage(args[1] + "'s " + args[2] + " side has been changed to " + args[3] + ".");
+										return true;
+									}
+									else if (args[2].equals("top") || args[2].equals("t")) {
+										try {
+											a.setTop(Integer.parseInt(args[3]));
+										}	
+										catch (NumberFormatException exp){
+											sender.sendMessage("Error resize command requires numbers.");
+											return false;
+										}
+										sender.sendMessage(args[1] + "'s " + args[2] + " side has been changed to " + args[3] + ".");
+										return true;
+									}
+									else if (args[2].equals("bottom") || args[2].equals("b")) {
+										try {
+											a.setBottom(Integer.parseInt(args[3]));
+										}	
+										catch (NumberFormatException exp){
+											sender.sendMessage("Error resize command requires numbers.");
+											return false;
+										}
+										sender.sendMessage(args[1] + "'s " + args[2] + " side has been changed to " + args[3] + ".");
+										return true;
+									}
+									else {
+										sender.sendMessage("resize requires a direction");
+										return false;
+									}
+								}
+							}
+							sender.sendMessage("Oops that name is not defined.");
+							return false;
+						}
+						sender.sendMessage("Oops that was not a name.");
+						return false;
 					}
 					else if(args[0].equals("rn"))
 					{
-						//TODO Renames specified volume
+						if (args.length == 3) {
+							for (CMArea a:areas) {
+								if (a.getName().equals(args[1])) {
+									a.setName(args[2]);
+									sender.sendMessage(args[1] + " has been renamedd to " + args[2] + ".");
+									return true;
+								}
+							}
+							sender.sendMessage("Oops that name is not defined.");
+							return false;
+						}
+						sender.sendMessage("Oops that was not a name.");
+						return false;
 					}
 					else if(args[0].equals("rights"))
 					{
-						//TODO: alters who has permission to use the commands 
+						if
 					}
 				}
 			}
