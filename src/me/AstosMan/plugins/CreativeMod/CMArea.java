@@ -1,41 +1,36 @@
 package me.AstosMan.plugins.CreativeMod;
 
-import java.io.FileInputStream;
-import java.io.FileOutputStream;
-import java.io.IOException;
-import java.io.ObjectInputStream;
-import java.io.ObjectOutputStream;
-import java.io.Serializable;
-import java.util.ArrayList;
+import java.io.*;
 import java.util.HashMap;
+import java.util.Set;
 
+import org.bukkit.GameMode;
 import org.bukkit.Location;
 import org.bukkit.Material;
 import org.bukkit.World;
 import org.bukkit.entity.Player;
-import org.bukkit.inventory.ItemStack;
-import org.bukkit.inventory.PlayerInventory;
 
 
-public class CMArea implements Serializable {
+public class CMArea{
 	private Location l1, l2, l3, l4;
 	private String name;
 	private int y1, y2;
 	private boolean trinitrotolueneIsOff, MobEntranceIsOff;
-	private HashMap<String, ItemStack[]> inventories; 
-	private ArrayList<Player> players;
+	//private HashMap<String, ItemStack[]> inventories; 
+	HashMap<String, GameMode> modeMap;
 
 	public CMArea(final World w, String s, int x1, int z1, int x2, int z2) {
 		// Constructor defaults height to an extremely big area.
 		this(w, s, x1, 1000, z1, x2, 0, z2);
-		inventories = new HashMap<String, ItemStack[]>();
-		players = new ArrayList<Player>();
+		//inventories = new HashMap<String, ItemStack[]>();
+		//players = new ArrayList<String>();
+		modeMap = new HashMap<String, GameMode>();
 	}
 
 	public CMArea(final World w, String s, int x1, int y1, int z1, int x2,
 			int y2, int z2) {
 		// Constructor requires a height variable.
-		inventories = new HashMap<String, ItemStack[]>();
+		//inventories = new HashMap<String, ItemStack[]>();
 		if (x1 >= x2) {
 			if (y1 >= y2) {
 				if (z1 >= z2) {
@@ -63,46 +58,43 @@ public class CMArea implements Serializable {
 		this.y2 = y2;
 		trinitrotolueneIsOff = true;
 		MobEntranceIsOff = true;
-		players = new ArrayList<Player>();
+		//players = new ArrayList<String>();
+		modeMap = new HashMap<String, GameMode>();
 	}
 
-	public void writeObject() throws IOException {
-		// Object serializer
-		ObjectOutputStream out = new ObjectOutputStream(new FileOutputStream(name + ".dat"));
-		out.defaultWriteObject();
-		out.writeObject(l1);
-		out.writeObject(l2);
-		out.close();
+	public Set<String> getPlayers()
+	{
+		return modeMap.keySet();
 	}
-
-	public void readObject(String name) throws IOException,
-			ClassNotFoundException {
-		// Object deserializer
-		ObjectInputStream in = new ObjectInputStream(new FileInputStream(name + ".dat"));
-		in.defaultReadObject();
-		l1 = (Location)in.readObject();
-		l2 = (Location)in.readObject();
-		in.close();
+	
+	public GameMode getPlayerPrevState(Player p)
+	{
+		Set<String> players = modeMap.keySet();
+		for(String k : players)
+		{
+			if(k.equals(p.getName()))
+			{
+				return modeMap.get(p.getName());
+			}
+		}
+		return GameMode.SURVIVAL;
 	}
 	
 	public boolean hasPlayer(Player p)
 	{
-		return players.contains(p) ? true : false;
+		for(String pl : modeMap.keySet())
+		{
+			if(p.getName().equals(pl))
+			{
+				return true;
+			}
+		}
+		return false;
 	}
 	
 	public void addPlayer(Player p)
 	{
-		this.players.add(p);
-	}
-	
-	public void addInventory(String pname, ItemStack[] pi)
-	{
-		this.inventories.put(pname, pi);
-	}
-	
-	public ItemStack[] getInventory(String pname)
-	{
-		return this.inventories.get(pname);
+		this.modeMap.put(p.getName(), p.getGameMode());
 	}
 
 	public int getBottom() {

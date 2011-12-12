@@ -36,3 +36,7 @@ Thumbs.db
 bin
 .classpath
 .project
+doc
+*.html
+*.css
+*.javascript

@@ -1,11 +1,10 @@
 package me.AstosMan.plugins.CreativeMod;
 
 import org.bukkit.GameMode;
+import org.bukkit.Location;
 import org.bukkit.entity.Player;
 import org.bukkit.event.player.PlayerListener;
 import org.bukkit.event.player.PlayerMoveEvent;
-import org.bukkit.inventory.Inventory;
-import org.bukkit.inventory.ItemStack;
 import org.bukkit.plugin.Plugin;
 
 public class CMPlayerListener extends PlayerListener 
@@ -20,17 +19,21 @@ public class CMPlayerListener extends PlayerListener
 	public void onPlayerMove(PlayerMoveEvent pme)
 	{
 		Player p = pme.getPlayer();
-		for(CMArea cma : ((CreativeMod)plugin).getAreas())
+		Location l = p.getLocation();
+		if(p.getGameMode() != GameMode.CREATIVE)
 		{
-			if(cma.getWorld() == p.getWorld() && cma.contains(p.getLocation()) && p.getGameMode() != GameMode.CREATIVE)
+			for(CMArea cma : ((CreativeMod)plugin).getAreas())
 			{
-					ItemStack[] pi = p.getInventory().getContents();
-					cma.addInventory(p.getName(), pi);
-					for(ItemStack is : pi)
-					{
-						p.getInventory().remove(is);
-					}
-					p.setGameMode(GameMode.CREATIVE);
+				if(cma.getWorld().getName().equals(p.getWorld().getName()) && !cma.contains(l) && cma.hasPlayer(p) )
+				{
+					p.getInventory().clear();
+					p.setGameMode(cma.getPlayerPrevState(p));
+				}
+				else if(cma.getWorld().getName().equals(p.getWorld().getName()) && cma.contains(l))
+				{
+						p.setGameMode(GameMode.CREATIVE);
+						cma.addPlayer(p);
+				}
 			}
 		}
 	}
