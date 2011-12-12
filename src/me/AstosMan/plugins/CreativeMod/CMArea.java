@@ -225,7 +225,7 @@ public class CMArea{
 		return MobEntranceIsOff;
 	}
 	
-	public void setTrinitrotolueneAsOff(boolean isOff) {
+	public void setTrinitrotolueneState(boolean isOff) {
 		// Sets the state of trinitrotolueneIsOff to input
 		trinitrotolueneIsOff = isOff;
 	}
@@ -235,7 +235,10 @@ public class CMArea{
 		for (int i = l2.getBlockX(); i <= l1.getBlockX(); i++) {
 			for (int j = l2.getBlockY(); i <= l1.getBlockY();  i++) {
 				for (int k = l2.getBlockZ(); i <= l1.getBlockZ(); i++) {
-					l1.getWorld().getBlockAt(i, j, k).setType(Material.AIR);
+					if (l1.getWorld().getBlockAt(i, j, k).getType() == Material.BEDROCK){}
+					else {
+						l1.getWorld().getBlockAt(i, j, k).setType(Material.AIR);
+					}
 				}
 			}
 		}
