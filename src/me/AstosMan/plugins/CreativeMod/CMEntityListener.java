@@ -3,13 +3,13 @@ package me.AstosMan.plugins.CreativeMod;
 import org.bukkit.entity.Creeper;
 import org.bukkit.entity.Monster;
 import org.bukkit.entity.TNTPrimed;
+import org.bukkit.event.Listener;
 import org.bukkit.event.entity.CreatureSpawnEvent;
 import org.bukkit.event.entity.EntityExplodeEvent;
-import org.bukkit.event.entity.EntityListener;
 import org.bukkit.event.entity.ExplosionPrimeEvent;
 import org.bukkit.plugin.Plugin;
 
-public class CMEntityListener extends EntityListener
+public class CMEntityListener implements Listener
 {
 	private Plugin plugin;
 	
