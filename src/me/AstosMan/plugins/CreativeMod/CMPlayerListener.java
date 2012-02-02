@@ -3,11 +3,13 @@ package me.AstosMan.plugins.CreativeMod;
 import org.bukkit.GameMode;
 import org.bukkit.Location;
 import org.bukkit.entity.Player;
-import org.bukkit.event.player.PlayerListener;
+import org.bukkit.event.EventHandler;
+import org.bukkit.event.EventPriority;
+import org.bukkit.event.Listener;
 import org.bukkit.event.player.PlayerMoveEvent;
 import org.bukkit.plugin.Plugin;
 
-public class CMPlayerListener extends PlayerListener 
+public class CMPlayerListener implements Listener 
 {
 	private Plugin plugin;
 	
@@ -16,6 +18,7 @@ public class CMPlayerListener extends PlayerListener
 		this.plugin = p;
 	}
 	
+	@EventHandler(priority = EventPriority.LOWEST)
 	public void onPlayerMove(PlayerMoveEvent pme)
 	{
 		Player p = pme.getPlayer();

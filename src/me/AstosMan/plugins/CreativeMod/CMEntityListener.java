@@ -3,6 +3,8 @@ package me.AstosMan.plugins.CreativeMod;
 import org.bukkit.entity.Creeper;
 import org.bukkit.entity.Monster;
 import org.bukkit.entity.TNTPrimed;
+import org.bukkit.event.EventHandler;
+import org.bukkit.event.EventPriority;
 import org.bukkit.event.Listener;
 import org.bukkit.event.entity.CreatureSpawnEvent;
 import org.bukkit.event.entity.EntityExplodeEvent;
@@ -18,6 +20,7 @@ public class CMEntityListener implements Listener
 		this.plugin = p;
 	}
 	
+	@EventHandler
 	public void onCreatureSpawn(CreatureSpawnEvent event) {
 		// If Mob is spawned and within a creative area that has set Mobs to off this method will cancel the spawn.
 		if (event.getEntity() instanceof Monster) {
@@ -28,10 +31,9 @@ public class CMEntityListener implements Listener
 				}
 			}
 		}
-		super.onCreatureSpawn(event);
 	}
 	
-	@Override
+	@EventHandler(priority = EventPriority.HIGHEST)
 	public void onEntityExplode(EntityExplodeEvent event) {
 		// If Creeper explodes and within a creative area that has set TNT to off this method will cancel the explosion.
 		if (event.getEntity() instanceof Creeper) {
@@ -42,9 +44,9 @@ public class CMEntityListener implements Listener
 				}
 			}
 		}
-		super.onEntityExplode(event);
 	}
 	
+	@EventHandler(priority = EventPriority.HIGHEST)
 	public void onExplosionPrimeEvent(ExplosionPrimeEvent event){
 		// If TNT is primed and within a creative area that has set TNT to off this method will cancel the explosion.
 		if (event.getEntity() instanceof TNTPrimed) {
@@ -55,6 +57,5 @@ public class CMEntityListener implements Listener
 				}
 			}
 		}
-		super.onExplosionPrime(event);
 	}
 }
